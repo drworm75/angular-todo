@@ -1,14 +1,17 @@
 app.factory("ItemFactory", function($http, $q, FIREBASE_CONFIG) {
+	
 	let getItemList = () => {
 	    let itemz = [];
 	    return $q((resolve, reject) => {
 	      $http.get(`${FIREBASE_CONFIG.databaseURL}/items.json`)
 	      .then((fbItems) => {
-	        var itemCollection = fbItems.data;
-	        Object.keys(itemCollection).forEach((key) => {
-	          itemCollection[key].id=key;
-	          itemz.push(itemCollection[key]);
-	        });
+	        let itemCollection = fbItems.data;
+	        if (itemCollection !== null) {
+		        Object.keys(itemCollection).forEach((key) => {
+		          itemCollection[key].id=key;
+		          itemz.push(itemCollection[key]);
+		        });
+		    }
 	          resolve(itemz);
 	      })
 	      .catch((error) => {
@@ -29,7 +32,19 @@ app.factory("ItemFactory", function($http, $q, FIREBASE_CONFIG) {
     });
   };
 
-	  return {getItemList:getItemList, postNewItem: postNewItem};
+  let deletz = (itemId) => {
+  	return $q((resolve, reject) => {
+  		$http.delete(`${FIREBASE_CONFIG.databaseURL}/items/${itemId}.json`)
+  		.then((resultz) => {
+  			resolve()
+  		})
+     .catch((error) => {
+        reject(error);
+      });
+    });
+  };
+	  return {getItemList:getItemList, postNewItem: postNewItem, deletz: deletz};
+
 
 
 });
