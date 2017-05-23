@@ -58,7 +58,7 @@ app.factory("ItemFactory", function($http, $q, FIREBASE_CONFIG) {
   };
 
 	let editItem = (item) => {
-    console.log("item.id", item)
+    console.log("item.id", item);
 		return $q((resolve, reject) => {
 			$http.put(`${FIREBASE_CONFIG.databaseURL}/items/${item.id}.json`, JSON.stringify({
 				assignedTo: item.assignedTo,
