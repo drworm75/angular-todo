@@ -1,49 +1,42 @@
-app.controller("AuthCtrl", function($location, $rootScope, $scope, AuthFactory, UserFactory) {
-    
-    $scope.auth = {
-        email: "a@a.com",
-        password: "aaaaaa",
-        username: "a"
-    };
+app.controller("AuthCtrl", function($location, $rootScope, $scope, AuthFactory, UserFactory){
+	$scope.auth = {
+		email: "a@a.com",
+		password: "aaaaaa"
+	};
+	
+	if($location.path() === '/logout'){
+		AuthFactory.logout();
+		$rootScope.user = {};
+		$location.url('/auth');
+	}
 
-    if($location.path() === "/logout") {
-        AuthFactory.logout();
-        $rootScope.user = {};
-        $location.url("/auth");
-    }
+	let logMeIn = () =>{
+		AuthFactory.authenticate($scope.auth).then((userCreds) => {
+			return UserFactory.getUser(userCreds.uid);
+		}, (error) => {
+			console.log("authenticate error", error);
+		}).then((user) => {
+			$rootScope.user = user;
+			$location.url('/items/list');
+		}).catch((error) => {
+			console.log("getUser error", error);
+		});
+	};
 
-    let logMeIn = () => {
-        AuthFactory.authenticate($scope.auth)
-        .then(userCreds => {
-            console.log("UserCreds", userCreds);
-            return UserFactory.getUser(userCreds.uid);
-        }, (error) => {
-            console.log("error in logMeIn", error);
-        })
-        .then(user => {
-            $rootScope.user = user;
-            $location.url("/items/list");
-            console.log("user", user);
-        })
-        .catch(error => console.log("Error in logMeIn/GetUser", error));
-    };
+	$scope.registerUser = () => {
+		AuthFactory.registerWithEmail($scope.auth).then((didRegister) => {
+			$scope.auth.uid = didRegister.uid;
+			return UserFactory.addUser($scope.auth);
+		}, (error) => {
+			console.log("registerWithEmail error", error);
+		}).then((registerComplete) => {
+			logMeIn();
+		}).catch((error) => {
+			console.log("addUser error", error);
+		});
+	};
 
-    $scope.registerUser = () => {
-        AuthFactory.registerWithEmail($scope.auth)
-        .then((didRegister) => {
-        $scope.auth.uid = didRegister.uid;
-            return UserFactory.addUser($scope.auth);
-        }, (error) => {
-            console.log("Error in registerUser", error);
-        }).then((registerComplete) => {
-            logMeIn();
-        }).catch((error) => {
-            console.log("Error in addUser", error);
-        });
-    };
-
-    $scope.loginUser = () => {
-        logMeIn();
-    };
-
+	$scope.loginUser = () => {
+		logMeIn();
+	};
 });

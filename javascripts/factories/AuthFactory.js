@@ -1,4 +1,4 @@
-app.factory("AuthFactory", function($q, $http, $rootScope, FIREBASE_CONFIG) {
+app.factory("AuthFactory", function($q, $http, FIREBASE_CONFIG) {
   let currentUserData = null;
 
   //Firebase: Determine if user is authenticated.

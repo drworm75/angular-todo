@@ -1,11 +1,12 @@
-app.controller("ItemNewCtrl", function($location, $scope, ItemFactory)  {
+app.controller("ItemNewCtrl", function($rootScope, $http, $location, $q, $scope, FIREBASE_CONFIG, ItemFactory) {
 
   $scope.addNewItem = () => {
+    console.log("Calling add new item");
     $scope.newTask.isCompleted = false;
+    $scope.newTask.uid = $rootScope.user.uid;
     ItemFactory.postNewItem($scope.newTask).then(() => {
       $scope.newTask = {};
       $location.url("/items/list");
-      //switch views
     }).catch((error) => {
       console.log("Add error", error);
     });

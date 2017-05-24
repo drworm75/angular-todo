@@ -1,10 +1,14 @@
-app.controller("ItemListCtrl", function($scope, ItemFactory)  { 
-	$scope.items = [];  
-		let getItems = () => {	
-		ItemFactory.getItemList().then((itemz) => {
+app.controller("ItemListCtrl", function($rootScope, $scope, ItemFactory) {
+	$scope.items = [];
+	$scope.searchText = "";
+
+	let getItems = () => {
+		console.log("Calling getItems");
+		console.log($rootScope);
+		ItemFactory.getItemList($rootScope.user.uid).then((itemz) => {
 			$scope.items = itemz;
 		}).catch((error) => {
-			console.log("Add error", error);
+			console.log("get Error", error);
 		});
 	};
 
@@ -12,10 +16,9 @@ app.controller("ItemListCtrl", function($scope, ItemFactory)  {
 
 	$scope.deleteItem = (id) => {
 		ItemFactory.deletz(id).then(() => {
-		getItems();
-		})
-		.catch((error) => {
-			console.log("deleteItem Error", error);
+				getItems();
+		}).catch((error) => {
+			console.log("deleteItem error", error);
 		});
 	};
 
@@ -25,4 +28,5 @@ app.controller("ItemListCtrl", function($scope, ItemFactory)  {
 			console.log("inputChange error", error);
 		});
 	};
+
 });
