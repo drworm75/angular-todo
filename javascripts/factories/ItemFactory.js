@@ -65,7 +65,8 @@ app.factory("ItemFactory", function($http, $q, FIREBASE_CONFIG) {
 				assignedTo: item.assignedTo,
 				isCompleted: item.isCompleted,
 				task: item.task,
-        uid: item.uid
+        uid: item.uid,
+        dueDate: item.dueDate
 			})
 			).then((resultz) => {
         console.log(resultz);
