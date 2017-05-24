@@ -31,5 +31,25 @@
             "uid": "aoWPHnuVTbhwNJvYkBKELRo9Tgh1",
             "username": "d"
         }
+    },
+    "tools": {
+        "tool0": {
+            "itemId": "item1",
+            "implement": "shovel"
+        },
+        "tool1": {
+            "itemId": "item1",
+            "implement": "shoes"
+        },
+        "tool2": {
+            "itemId": "item0",
+            "implement": "goat"
+        },
+        "tool3": {
+            "itemId": "item2",
+            "implement": "goat"
+        }
+
     }
+
 }
