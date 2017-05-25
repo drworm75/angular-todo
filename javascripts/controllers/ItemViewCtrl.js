@@ -9,9 +9,9 @@ app.controller("ItemViewCtrl", function($routeParams, $scope, ItemFactory, ToolF
   	console.log("getSingleItem", error);
   });
 
-  ToolFactory.getToolList($routeParams.id).then(() => {
+  ToolFactory.getToolList($routeParams.id).then((results) => {
   	console.log("results", results);
-  	// $scope.tools = results.data;
+  	$scope.tools = results;
   }).catch((error) => {
   	console.log("error in getToolList", error);
 
